@@ -2,7 +2,7 @@ from kafka import KafkaConsumer
 import json 
 
 consumer = KafkaConsumer(
-    "product-topic",
+    "Producer_topic",
     bootstrap_servers="localhost:9092",
     auto_offset_reset="earliest",
     group_id="product_consumer_group",
