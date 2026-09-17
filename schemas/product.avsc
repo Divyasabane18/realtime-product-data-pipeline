@@ -1,0 +1,26 @@
+{
+  "type": "record",
+  "name": "Product",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int"
+    },
+    {
+      "name": "product_name",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "price",
+      "type": "float"
+    },
+    {
+      "name": "last_updated",
+      "type": "string"
+    }
+  ]
+}

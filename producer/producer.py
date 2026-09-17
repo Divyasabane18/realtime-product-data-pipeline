@@ -1,6 +1,13 @@
 import mysql.connector
 from kafka import KafkaProducer
 import json
+from datetime import datetime
+
+
+with open("last_timestamp.txt", "r") as file:
+    last_read_timestamp = datetime.fromisoformat(file.read().strip())
+    print("Last read timestamp:", last_read_timestamp )
+
 
 #connection to mysql
 connection = mysql.connector.connect(
@@ -17,7 +24,8 @@ print("Connectred to mysql successfully")
 cursor =connection.cursor()
 
 #fetch products
-cursor.execute("select * from product")
+#this select * from product fetch everything but we want to do using lasttimestamp
+cursor.execute("""select * from product where last_updated > %s order by last_updated""" , (last_read_timestamp,))
 
 rows =cursor.fetchall()
 
@@ -40,6 +48,13 @@ for row in rows:
 
 
 producer.flush()
+
+if rows:
+    max_timestamp = max(row[4] for row in rows)
+
+    with open("last_timestamp.txt","w") as file:
+        file.write(max_timestamp.isoformat(sep=" "))
+        print("Update last read timestamp:" , max_timestamp)
 
 #close connection
 cursor.close()
